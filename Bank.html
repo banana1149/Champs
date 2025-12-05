@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lammy Capital | Client Login</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#020617',    
+                            navy: '#0f172a',    
+                            surface: '#1e293b', 
+                            gold: '#d4af37'      
+                        }
+                    },
+                    animation: {
+                        'shine': 'shine 1.5s infinite',
+                    },
+                    keyframes: {
+                        shine: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top right, #1e293b 0%, #020617 100%);
+            min-height: 100vh;
+        }
+        .form-panel {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .login-input {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .login-input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+            outline: none;
+        }
+        .shine-text {
+             background: linear-gradient(to right, #d4af37 0%, #fcd34d 20%, #d4af37 40%, #d4af37 100%);
+             -webkit-background-clip: text;
+             -webkit-text-fill-color: transparent;
+             background-size: 200% auto;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center font-sans antialiased">
+
+    <div class="max-w-md w-full p-6 sm:p-8">
+        <div class="form-panel rounded-2xl shadow-2xl p-8">
+            <div class="text-center mb-10">
+                <div class="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center mb-3 shadow-lg shadow-brand-gold/20">
+                    <svg class="w-8 h-8 text-brand-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-serif font-bold text-white mb-2">
+                    LAMMY <span class="shine-text">CAPITAL</span>
+                </h1>
+                <p class="text-slate-400 text-sm">Wealth Management Portal</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-6">
+                
+                <div>
+                    <label for="username" class="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full login-input rounded-lg px-4 py-3 text-base placeholder-slate-600 focus:ring-1 focus:ring-brand-gold"
+                        placeholder="Enter your username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm uppercase tracking-wider text-slate-400 font-semibold mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full login-input rounded-lg px-4 py-3 text-base placeholder-slate-600 focus:ring-1 focus:ring-brand-gold"
+                        placeholder="Enter your password">
+                </div>
+
+                <div id="loginError" class="text-center text-red-400 text-sm font-medium hidden p-2 border border-red-400/30 bg-red-900/20 rounded-lg">
+                    Invalid username or password. Please try again.
+                </div>
+                
+                <button type="submit" id="loginBtn" 
+                    class="w-full bg-brand-gold text-brand-dark font-bold text-lg py-3 rounded-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-brand-gold/30">
+                    Login Securely
+                </button>
+            </form>
+            
+            <p class="text-xs text-slate-500 text-center mt-6">
+                For account assistance, please contact your service officer.
+            </p>
+            
+            </div>
+    </div>
+
+    <script>
+        
+        // --- CLIENT DATABASE ---
+        // Hardcoded database with 20 unique client profiles
+        const CLIENT_DATABASE = {
+            // Low Balance / Conservative
+            'user1':   { password: 'pass1', name: 'Alhaji Bello', aum: 1500000, ytd: 1.5, service_contact: '+234 81 100 0001' },
+            'user2':   { password: 'pass2', name: 'Ngozi Okoro', aum: 2200000, ytd: 2.1, service_contact: '+234 81 100 0002' },
+            'user3':   { password: 'pass3', name: 'Tunde Adebayo', aum: 1800000, ytd: -0.5, service_contact: '+234 81 100 0003' },
+            'user4':   { password: 'pass4', name: 'Fatima Musa', aum: 3500000, ytd: 3.0, service_contact: '+234 81 100 0004' },
+            'user5':   { password: 'pass5', name: 'Chinedu Eze', aum: 4100000, ytd: 0.8, service_contact: '+234 81 100 0005' },
+
+            // Mid Balance / Balanced
+            'user6':   { password: 'pass6', name: 'Amaka Obi', aum: 7800000, ytd: 5.5, service_contact: '+234 81 100 0006' },
+            'user7':   { password: 'pass7', name: 'Jide Kolade', aum: 8500000, ytd: 7.2, service_contact: '+234 81 100 0007' },
+            'user8':   { password: 'pass8', name: 'Zainab Idris', aum: 9200000, ytd: 4.8, service_contact: '+234 81 100 0008' },
+            'user9':   { password: 'pass9', name: 'Danjuma Gombe', aum: 6900000, ytd: 6.1, service_contact: '+234 81 100 0009' },
+            'user10':  { password: 'pass10', name: 'Adaora Nwosu', aum: 10100000, ytd: 7.9, service_contact: '+234 81 100 0010' },
+
+            // High Balance / Growth
+            'user11':  { password: 'pass11', name: 'Kenneth Ozo', aum: 15500000, ytd: 10.5, service_contact: '+234 81 100 0011' },
+            'user12':  { password: 'pass12', name: 'Sadiq Kabir', aum: 18900000, ytd: 9.8, service_contact: '+234 81 100 0012' },
+            'user13':  { password: 'pass13', name: 'Ibrahim Yaro', aum: 21200000, ytd: 11.2, service_contact: '+234 81 100 0013' },
+            'user14':  { password: 'pass14', name: 'Ebunoluwa Coker', aum: 25000000, ytd: 8.5, service_contact: '+234 81 100 0014' },
+            'user15':  { password: 'pass15', name: 'Obinna Ibe', aum: 30000000, ytd: 12.0, service_contact: '+234 81 100 0015' },
+            
+            // Ultra-High Net Worth / Different Returns
+            'user16':  { password: 'pass16', name: 'Aisha Aliyu', aum: 45000000, ytd: 15.1, service_contact: '+234 81 100 0016' },
+            'user17':  { password: 'pass17', name: 'David Jones', aum: 55000000, ytd: -2.3, service_contact: '+234 81 100 0017' },
+            'user18':  { password: 'pass18', name: 'Precious Umeh', aum: 62000000, ytd: 1.0, service_contact: '+234 81 100 0018' },
+            'user19':  { password: 'pass19', name: 'Emeka Nnadi', aum: 70000000, ytd: 20.0, service_contact: '+234 81 100 0019' },
+            'user20':  { password: 'pass20', name: 'Zahra Omar', aum: 950000, ytd: 0.1, service_contact: '+234 81 100 0020' }
+        };
+
+        // Make handleLogin globally accessible (called from onsubmit)
+        window.handleLogin = function(event) {
+            event.preventDefault();
+            
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            loginBtn.innerText = 'Verifying...';
+            loginError.classList.add('hidden');
+            
+            // Simulate network delay
+            setTimeout(() => {
+                
+                const client = CLIENT_DATABASE[username];
+
+                if (client && client.password === password) {
+                    
+                    // Successful login: Store client data in localStorage
+                    const clientData = {
+                        name: client.name,
+                        aum: client.aum,
+                        ytd: client.ytd,
+                        service_contact: client.service_contact
+                    };
+                    localStorage.setItem('clientData', JSON.stringify(clientData));
+                    
+                    // Redirect to the dashboard
+                    window.location.href = 'dashboard.html';
+                
+                } else {
+                    // Failed login
+                    loginError.classList.remove('hidden');
+                    loginBtn.innerText = 'Login Securely';
+                }
+            }, 1000); // 1 second delay for mock loading
+        }
+
+        // On page load, check if client data exists and redirect if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('clientData')) {
+                // If client data exists, assume session is active and go to dashboard
+                // This prevents users from having to log in every time they refresh the page.
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
